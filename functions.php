@@ -64,8 +64,6 @@ function getMoves ( $startpos ) {
   global $FIRST_PASS_TIME, $SECOND_PASS_TIME, $ALT_THRESHOLD;
   global $MULTIPV;
 
-  echo "\nPosition: $startpos\n";
-  echo "\nPotential moves: ";
   $uciOutput = getUci( '', $FIRST_PASS_TIME, $MULTIPV, $startpos );
 
   preg_match_all( "/info.*?cp (-?[0-9]+).*?([a-h][1-8][a-h][1-8][qrnb]?)/", $uciOutput, $matches );
@@ -84,7 +82,6 @@ function getMoves ( $startpos ) {
   print_r(implode(', ', $candidateMoves));
 
   // Remove moves that didn't analyse correctly
-  echo "\nDeep analysis: ";
   foreach ( $candidateMoves as $key => $move ) {
     $tmp = getPositionEval( $move, $SECOND_PASS_TIME, 1, $startpos );
     if ($tmp) {
@@ -98,7 +95,6 @@ function getMoves ( $startpos ) {
   print_r(implode(', ', $candidateMovesEval));
 
   // Sort by evaluation
-  echo "\nSorting moves\n";
   array_multisort( $candidateMovesEval, SORT_ASC, SORT_NUMERIC, $candidateMoves, $candidateMovesLine );
 
 
@@ -115,7 +111,6 @@ function getMoves ( $startpos ) {
     return false;
   }
 
-  echo "Ranking moves\n";
   $moveArray = array();
 
   foreach ( $candidateMoves as $key => $move ) {
